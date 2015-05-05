@@ -40,6 +40,7 @@
   <ItemGroup>
     <Compile Include="clsBotao.cs" />
     <Compile Include="clsNake.cs" />
+    <Compile Include="clsStain.cs" />
     <Compile Include="clsTabuleiro.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Program.cs" />

@@ -15,6 +15,7 @@ namespace Pacnake
 
         clsTabuleiro Tab;
         clsNake Pac;
+        clsStain stain;
 
         public Game1()
             : base()
@@ -29,6 +30,7 @@ namespace Pacnake
 
             Tab = new clsTabuleiro();
             Pac=new clsNake();
+            stain = new clsStain();
         }
 
         protected override void Initialize()
@@ -36,6 +38,7 @@ namespace Pacnake
             // TODO: Add your initialization logic here
 
             Pac.inicialize();
+            stain.inicialize();
             base.Initialize();
         }
 
@@ -46,6 +49,7 @@ namespace Pacnake
 
             Tab.loadContent(Content);
             Pac.loadContent(Content);
+            stain.loadContent(Content);
         }
 
 
@@ -53,6 +57,7 @@ namespace Pacnake
         {
             Tab.unloadContent();
             Pac.unloadContent();
+            stain.unloadContent();
         }
 
         protected override void Update(GameTime gameTime)
@@ -75,6 +80,7 @@ namespace Pacnake
             spriteBatch.Draw(Content.Load<Texture2D>("menu"), new Rectangle(0, 0, 630, 630), Color.White);
             Tab.draw(spriteBatch);
             Pac.draw(spriteBatch);
+            stain.draw(spriteBatch);
 
             spriteBatch.End();
 
