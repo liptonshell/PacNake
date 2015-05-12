@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace Pacnake
 {
@@ -12,10 +13,17 @@ namespace Pacnake
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        Random random;
 
         clsTabuleiro Tab;
         clsNake Pac;
         clsStain stain;
+
+
+        float lastHumanMove;
+        float ticker;
+        float timer = 0;
+        bool isGameOver = false;
 
         public Game1()
             : base()
@@ -39,6 +47,9 @@ namespace Pacnake
 
             Pac.inicialize();
             stain.inicialize();
+
+            random = new Random();
+
             base.Initialize();
         }
 
@@ -66,6 +77,24 @@ namespace Pacnake
                 Exit();
 
             Pac.update();
+
+
+            if (!isGameOver)
+            {
+                lastHumanMove += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                ticker += gameTime.ElapsedGameTime.Milliseconds;
+                timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                //GameOver();
+
+                // Movimento dos fantasmas e do jogador
+                if (ticker >= 250)
+                {
+                    ticker -= 250;
+                    Pac.HumanMove(lastHumanMove);
+                }
+            }
+
 
             base.Update(gameTime);
         }

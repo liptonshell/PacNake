@@ -226,7 +226,6 @@ namespace Pacnake
 
         public bool CanGo(int pX, int pY)
         {
-
             if (Board1[pX, pY] != 1)
                 return true;
             else
