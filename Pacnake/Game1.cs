@@ -19,12 +19,6 @@ namespace Pacnake
         clsNake Pac;
         clsStain stain;
 
-
-        float lastHumanMove;
-        float ticker;
-        float timer = 0;
-        bool isGameOver = false;
-
         public Game1()
             : base()
         {
@@ -77,24 +71,6 @@ namespace Pacnake
                 Exit();
 
             Pac.update();
-
-
-            if (!isGameOver)
-            {
-                lastHumanMove += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                ticker += gameTime.ElapsedGameTime.Milliseconds;
-                timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-                //GameOver();
-
-                // Movimento dos fantasmas e do jogador
-                if (ticker >= 250)
-                {
-                    ticker -= 250;
-                    Pac.HumanMove(lastHumanMove);
-                }
-            }
-
 
             base.Update(gameTime);
         }

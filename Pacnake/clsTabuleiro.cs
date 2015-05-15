@@ -216,7 +216,7 @@ namespace Pacnake
             {
                 for (int y = 0; y < 21; y++)
                 {
-                    if (Board1[y, x] == 1)
+                    if (Board5[y, x] == 1)
                     {
                         spriteBatch.Draw(wall, new Vector2(x * 30, y * 30), Color.Orange);
                     }
@@ -226,7 +226,7 @@ namespace Pacnake
 
         public bool CanGo(int pX, int pY)
         {
-            if (Board1[pX, pY] != 1)
+            if (Board5[pX, pY] != 1)
                 return true;
             else
                 return false;
