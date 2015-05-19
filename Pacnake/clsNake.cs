@@ -8,12 +8,33 @@ using Microsoft.Xna.Framework.Storage;
 
 namespace Pacnake
 {
-    class clsNake
+    public enum Direction
     {
-        Texture2D Nake;
+        Up,
+        Down,
+        Left,
+        Right
+    }
+
+    public class clsNake
+    {
+        Texture2D Nake,Tail;
         int pX1 = 1, pY1 = 1;
         clsTabuleiro go;
         KeyboardState oldKeyState;
+
+        public const float MoveSpeed = .2f;
+        private float moveTimer;
+        private DateTime lastUpdatedAt;
+        private Direction direction;
+        private List<Rectangle> parts;
+
+        public clsNake()
+        {
+            parts = new List<Rectangle>();
+            direction = Direction.Right;
+        }
+
         public void inicialize()
         {
             go = new clsTabuleiro();
@@ -21,7 +42,8 @@ namespace Pacnake
 
         public void loadContent(ContentManager Content)
         {
-            Nake = Content.Load<Texture2D>("Man1");
+            Nake = Content.Load<Texture2D>("Man2");
+            Tail = Content.Load<Texture2D>("Tail2");
         }
 
         public void unloadContent()

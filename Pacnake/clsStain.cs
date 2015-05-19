@@ -8,17 +8,18 @@ using System.Text;
 
 namespace Pacnake
 {
-    class clsStain
+    public class clsStain
     {
-        Texture2D stain1, stain2, stain3;
+        Texture2D stain1;
         int score;
         clsTabuleiro board;
+        public Point Position;
+        private Random rand = new Random();
 
         public void inicialize()
         {
             board = new clsTabuleiro();
         }
-
 
         public void loadContent(ContentManager Content)
         {
@@ -35,7 +36,6 @@ namespace Pacnake
         public void draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(stain1, new Vector2(30, 30), Color.White);
-            spriteBatch.Draw(stain1, new Vector2(200, 30), Color.White);
             spriteBatch.Draw(stain1, new Vector2(30, 500), Color.White);
         }
         
