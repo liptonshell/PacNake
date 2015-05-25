@@ -10,11 +10,11 @@ namespace Pacnake
 {
     public class clsTabuleiro
     {
-        public enum tabuleiro
-        {
-            currentBoard,
-            boar1, boar2, boar3, boar4, boar5, boar6, boar7, boar8
-        }
+        //public enum tabuleiro
+        //{
+        //    currentBoard,
+        //    boar1, boar2, boar3, boar4, boar5, boar6, boar7, boar8
+        //}
         //Tabuleiros sem parede
 
         byte[,] Board1 = {
@@ -220,43 +220,19 @@ namespace Pacnake
             {
                 for (int y = 0; y < 21; y++)
                 {
-                    if (Board7[y, x] == 1)
+                    if (Board2[y, x] == 1)
                     {
                         spriteBatch.Draw(wall, new Vector2(x * 30, y * 30), Color.Orange);
                     }
                 }
             }
         }
-        tabuleiro currentTab = tabuleiro.currentBoard;
+
         public bool CanGo(int pX, int pY)
         {
-            switch (currentTab)
-            {
-                case tabuleiro.boar1:
-                    if (Board1[pX, pY] != 1) return true;
-                    else return false;
-                case tabuleiro.boar2:
+
                     if (Board2[pX, pY] != 1) return true;
                     else return false;
-                case tabuleiro.boar3:
-                    if (Board3[pX, pY] != 1) return true;
-                    else return false;
-                case tabuleiro.boar4:
-                    if (Board4[pX, pY] != 1) return true;
-                    else return false;
-                case tabuleiro.boar5:
-                    if (Board5[pX, pY] != 1) return true;
-                    else return false;
-                case tabuleiro.boar6:
-                    if (Board6[pX, pY] != 1) return true;
-                    else return false;
-                case tabuleiro.boar7:
-                    if (Board7[pX, pY] != 1) return true;
-                    else return false;
-                case tabuleiro.boar8:
-                    if (Board8[pX, pY] != 1) return true;
-                    else return false;
-            }
         }
     }
 }

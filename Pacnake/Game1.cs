@@ -10,14 +10,13 @@ namespace Pacnake
     /// </summary>
     public class Game1 : Game
     {
-        GraphicsDeviceManager graphics;
+        public GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
-        Random random;
 
         clsTabuleiro Tab;
         clsNake Pac;
         //clsStain stain;
+
 
         public Game1()
             : base()
@@ -25,8 +24,9 @@ namespace Pacnake
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            graphics.PreferredBackBufferHeight = 630;//750
-            graphics.PreferredBackBufferWidth = 630;//700
+            graphics.PreferredBackBufferHeight = 750;
+            graphics.PreferredBackBufferWidth = 750;
+            graphics.ApplyChanges();
 
             IsMouseVisible = true;
 
@@ -40,9 +40,6 @@ namespace Pacnake
             // TODO: Add your initialization logic here
 
             Pac.inicialize();
-            //stain.inicialize();
-
-            //random = new Random();
 
             base.Initialize();
         }
@@ -54,15 +51,12 @@ namespace Pacnake
 
             Tab.loadContent(Content);
             Pac.loadContent(Content);
-            //stain.loadContent(Content);
         }
 
 
         protected override void UnloadContent()
         {
-            Tab.unloadContent();
-            Pac.unloadContent();
-            //stain.unloadContent();
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -82,10 +76,8 @@ namespace Pacnake
 
             spriteBatch.Begin();
 
-            spriteBatch.Draw(Content.Load<Texture2D>("menu"), new Rectangle(0, 0, 630, 630), Color.White);
             Tab.draw(spriteBatch);
             Pac.draw(spriteBatch);
-            //stain.draw(spriteBatch);
 
             spriteBatch.End();
 

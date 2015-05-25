@@ -5,88 +5,213 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
+using System.Collections;
 
 namespace Pacnake
 {
-    public enum Direction
-    {
-        Up,
-        Down,
-        Left,
-        Right
-    }
-
     public class clsNake
     {
-        Texture2D Nake,Tail;
-        int pX1 = 1, pY1 = 1;
-        clsTabuleiro go;
-        KeyboardState oldKeyState;
+        GraphicsDeviceManager graphics;
 
-        public const float MoveSpeed = .2f;
-        private float moveTimer;
-        private DateTime lastUpdatedAt;
-        private Direction direction;
-        private List<Rectangle> parts;
+        SpriteFont Font;
+        Texture2D Nake1, Tail1, Food, bg;
+        string direction;
+
+        //elementos corpo da cobra
+        ArrayList elementY = new ArrayList();
+        ArrayList elementX = new ArrayList();
+
+        //elementos Comida
+        ArrayList foodY = new ArrayList();
+        ArrayList foodX = new ArrayList();
+
+        int updates = 0;
+        int speed = 7;//velocidade
+        int pontos = 0;
+
+        int heightY;
+        int widthX;
+
+        bool lost = false;
 
         public clsNake()
         {
-            parts = new List<Rectangle>();
-            direction = Direction.Right;
+            graphics.PreferredBackBufferHeight = 750;
+            graphics.PreferredBackBufferWidth = 750;
+            graphics.ApplyChanges();
+
+            heightY = graphics.PreferredBackBufferHeight / 30;
+            widthX = graphics.PreferredBackBufferWidth / 30;
+
+            //adiçao e podiçao inicial cada parte da cobra
+            elementX.Add(0);
+            elementY.Add(0);
+
+            elementX.Add(1);
+            elementY.Add(0);
+
+            //gera comida inicial
+            Random d = new Random();
+            foodX.Add(d.Next(0, graphics.PreferredBackBufferWidth / 30));
+            foodY.Add(d.Next(0, graphics.PreferredBackBufferHeight / 30));
+            
         }
 
         public void inicialize()
         {
-            go = new clsTabuleiro();
+            //go = new clsTabuleiro();
         }
 
         public void loadContent(ContentManager Content)
         {
-            Nake = Content.Load<Texture2D>("Man2");
-            Tail = Content.Load<Texture2D>("Tail2");
-        }
-
-        public void unloadContent()
-        {
-            Nake.Dispose();
+            //load das texturas
+            Nake1 = Content.Load<Texture2D>("Man1");
+            Tail1 = Content.Load<Texture2D>("Tail2");
+            Food = Content.Load<Texture2D>("pera");
+            bg = Content.Load<Texture2D>("menu");
+            Font = Content.Load<SpriteFont>("MyFont");
         }
 
         public void update()
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.Down))
+            int i = 1;
+            while (i < elementX.Count)
             {
-                if (go.CanGo(pX1, pY1 + 1))
+                //caso morda uma das partes do corpo
+                if (elementX[i].ToString() == elementX[0].ToString() && elementY[i].ToString() == elementY[0].ToString())
                 {
-                    pY1++;
+                    lost = true;
                 }
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.Up))
-            {
-                if (go.CanGo(pX1, pY1 - 1))
-                {
-                    pY1--;
-                }
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.Left))
-            {
-                if (go.CanGo(pX1 - 1, pY1))
-                {
-                    pX1--;
-                }
+                i++;
             }
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Right))
+            if (lost == false)
             {
-                if (go.CanGo(pX1 + 1, pY1))
+                KeyboardState ks = Keyboard.GetState();
+                //direcçoes
+                if (ks.IsKeyDown(Keys.Left))
                 {
-                    pX1++;
+                    if (direction != "r") direction = "l";
                 }
+                if (ks.IsKeyDown(Keys.Right))
+                {
+                    if (direction != "l") direction = "r";
+                }
+                if (ks.IsKeyDown(Keys.Up))
+                {
+                    if (direction != "d") direction = "u";
+                }
+                if (ks.IsKeyDown(Keys.Down))
+                {
+                    if (direction != "u") direction = "d";
+                }
+
+                //movimento
+                if (updates == speed)
+                {
+                    if (direction == "d")
+                    {
+                        elementX.Insert(0, elementX[0]);
+                        elementX.RemoveAt(elementX.Count - 1);
+
+                        elementY.Insert(0, Convert.ToInt16(elementY[0]) + 1);
+                        elementY.RemoveAt(elementY.Count - 1);
+                    }
+                    if (direction == "u")
+                    {
+                        elementX.Insert(0, elementX[0]);
+                        elementX.RemoveAt(elementX.Count - 1);
+
+                        elementY.Insert(0, Convert.ToInt16(elementY[0]) - 1);
+                        elementY.RemoveAt(elementY.Count - 1);
+                    }
+                    if (direction == "l")
+                    {
+                        elementX.Insert(0, Convert.ToInt16(elementX[0]) - 1);
+                        elementX.RemoveAt(elementX.Count - 1);
+
+                        elementY.Insert(0, elementY[0]);
+                        elementY.RemoveAt(elementY.Count - 1);
+                    }
+
+                    if (direction == "r")
+                    {
+                        elementX.Insert(0, Convert.ToInt16(elementX[0]) + 1);
+                        elementX.RemoveAt(elementX.Count - 1);
+
+                        elementY.Insert(0, elementY[0]);
+                        elementY.RemoveAt(elementY.Count - 1);
+                    }
+
+                    updates = 0;
+                }
+                else
+                {
+                    updates++;
+                }
+
+
+                i = 0;
+                while (i < foodX.Count)
+                {
+                    if (foodX[i].ToString() == elementX[0].ToString() && foodY[i].ToString() == elementY[0].ToString())
+                    {
+                        //remoçao comida
+                        foodX.RemoveAt(i);
+                        foodY.RemoveAt(i);
+
+                        //Adiçao parte na cobra
+                        elementX.Add(-1);
+                        elementY.Add(-1);
+
+                        //adiçao pontos
+                        pontos += 10;
+
+                        //coloçaos comida seguinte
+                        Random d = new Random();
+                        foodX.Add(d.Next(0, graphics.PreferredBackBufferWidth / 30));
+                        foodY.Add(d.Next(0, graphics.PreferredBackBufferHeight / 30));
+                    }
+                    i++;
+                }
+
+                //warp (aparecer no outro lado da tela)
+                if (Convert.ToInt16(elementX[0]) < 0) { elementX[0] = graphics.PreferredBackBufferWidth / 30; }
+                if (Convert.ToInt16(elementX[0]) > graphics.PreferredBackBufferWidth / 30) { elementX[0] = 0; }
+                if (Convert.ToInt16(elementY[0]) < 0) { elementY[0] = graphics.PreferredBackBufferHeight / 30; }
+                if (Convert.ToInt16(elementY[0]) > graphics.PreferredBackBufferHeight / 30) { elementY[0] = 0; }
             }
         }
 
         public void draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Nake, new Vector2(pX1 * 30, pY1 * 30), Color.White);
+            //desenho BackGround
+            spriteBatch.Draw(bg, new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight), Color.White);
+
+            int i = 0;
+            while (i < elementX.Count)
+            {
+                //desenho Corpo
+                spriteBatch.Draw(Tail1, new Rectangle(Convert.ToInt16(elementX[i]) * 30, Convert.ToInt16(elementY[i]) * 30, 30, 30), Color.White);
+                i++;
+            }
+            //desenho cabeça
+            spriteBatch.Draw(Nake1, new Rectangle(Convert.ToInt16(elementX[0]) * 30, Convert.ToInt16(elementY[0]) * 30, 30, 30), Color.White);
+
+            i = 0;
+            while (i < foodX.Count)
+            {
+                //desenho comida
+                spriteBatch.Draw(Food, new Rectangle(Convert.ToInt16(foodX[i]) * 30, Convert.ToInt16(foodY[i]) * 30, 30, 30), Color.White);
+                i++;
+            }
+
+            if (lost)
+            {
+                spriteBatch.DrawString(Font, "PERDEU.", new Vector2(50, graphics.PreferredBackBufferHeight / 2), Color.White);
+            }
+
+            spriteBatch.DrawString(Font, "Pontos: " + pontos.ToString(), new Vector2(10, 10), Color.White);
         }
     }
 }
