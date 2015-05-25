@@ -77,7 +77,7 @@ namespace Pacnake
             spriteBatch.Begin();
 
             Tab.draw(spriteBatch);
-            Pac.draw(spriteBatch);
+            //Pac.draw(spriteBatch);
 
             spriteBatch.End();
 

@@ -36,12 +36,8 @@ namespace Pacnake
 
         public clsNake()
         {
-            graphics.PreferredBackBufferHeight = 750;
-            graphics.PreferredBackBufferWidth = 750;
-            graphics.ApplyChanges();
-
-            heightY = graphics.PreferredBackBufferHeight / 30;
-            widthX = graphics.PreferredBackBufferWidth / 30;
+            heightY = 750 / 30;
+            widthX = 750 / 30;
 
             //adiçao e podiçao inicial cada parte da cobra
             elementX.Add(0);
@@ -52,8 +48,8 @@ namespace Pacnake
 
             //gera comida inicial
             Random d = new Random();
-            foodX.Add(d.Next(0, graphics.PreferredBackBufferWidth / 30));
-            foodY.Add(d.Next(0, graphics.PreferredBackBufferHeight / 30));
+            foodX.Add(d.Next(0, 750 / 30));
+            foodY.Add(d.Next(0, 750 / 30));
             
         }
 
@@ -169,24 +165,24 @@ namespace Pacnake
 
                         //coloçaos comida seguinte
                         Random d = new Random();
-                        foodX.Add(d.Next(0, graphics.PreferredBackBufferWidth / 30));
-                        foodY.Add(d.Next(0, graphics.PreferredBackBufferHeight / 30));
+                        foodX.Add(d.Next(0, 750 / 30));
+                        foodY.Add(d.Next(0, 750 / 30));
                     }
                     i++;
                 }
 
                 //warp (aparecer no outro lado da tela)
-                if (Convert.ToInt16(elementX[0]) < 0) { elementX[0] = graphics.PreferredBackBufferWidth / 30; }
-                if (Convert.ToInt16(elementX[0]) > graphics.PreferredBackBufferWidth / 30) { elementX[0] = 0; }
-                if (Convert.ToInt16(elementY[0]) < 0) { elementY[0] = graphics.PreferredBackBufferHeight / 30; }
-                if (Convert.ToInt16(elementY[0]) > graphics.PreferredBackBufferHeight / 30) { elementY[0] = 0; }
+                if (Convert.ToInt16(elementX[0]) < 0) { elementX[0] = 750 / 30; }
+                if (Convert.ToInt16(elementX[0]) > 750 / 30) { elementX[0] = 0; }
+                if (Convert.ToInt16(elementY[0]) < 0) { elementY[0] = 750 / 30; }
+                if (Convert.ToInt16(elementY[0]) > 750 / 30) { elementY[0] = 0; }
             }
         }
 
         public void draw(SpriteBatch spriteBatch)
         {
             //desenho BackGround
-            spriteBatch.Draw(bg, new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight), Color.White);
+            spriteBatch.Draw(bg, new Rectangle(0, 0, 750, 750), Color.White);
 
             int i = 0;
             while (i < elementX.Count)
@@ -208,7 +204,7 @@ namespace Pacnake
 
             if (lost)
             {
-                spriteBatch.DrawString(Font, "PERDEU.", new Vector2(50, graphics.PreferredBackBufferHeight / 2), Color.White);
+                spriteBatch.DrawString(Font, "PERDEU.", new Vector2(50, 750 / 2), Color.White);
             }
 
             spriteBatch.DrawString(Font, "Pontos: " + pontos.ToString(), new Vector2(10, 10), Color.White);
