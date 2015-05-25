@@ -24,8 +24,8 @@ namespace Pacnake
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            graphics.PreferredBackBufferHeight = 750;
-            graphics.PreferredBackBufferWidth = 750;
+            graphics.PreferredBackBufferHeight = 630;
+            graphics.PreferredBackBufferWidth = 630;
             graphics.ApplyChanges();
 
             IsMouseVisible = true;
@@ -77,7 +77,7 @@ namespace Pacnake
             spriteBatch.Begin();
 
             Tab.draw(spriteBatch);
-            //Pac.draw(spriteBatch);
+            Pac.draw(spriteBatch);
 
             spriteBatch.End();
 

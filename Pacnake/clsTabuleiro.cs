@@ -209,18 +209,13 @@ namespace Pacnake
         {
             wall = Content.Load<Texture2D>("box");
         }
-
-        public void unloadContent()
-        {
-            wall.Dispose();
-        }
         public void draw(SpriteBatch spriteBatch)
         {
             for (int x = 0; x < 21; x++)
             {
                 for (int y = 0; y < 21; y++)
                 {
-                    if (Board2[y, x] == 1)
+                    if (Board6[y, x] == 1)
                     {
                         spriteBatch.Draw(wall, new Vector2(x * 30, y * 30), Color.Orange);
                     }
@@ -228,11 +223,10 @@ namespace Pacnake
             }
         }
 
-        public bool CanGo(int pX, int pY)
-        {
-
-                    if (Board2[pX, pY] != 1) return true;
-                    else return false;
-        }
+        //public bool CanGo(int pX, int pY)
+        //{
+        //    if (Board2[pX, pY] != 1) return true;
+        //    else return false;
+        //}
     }
 }

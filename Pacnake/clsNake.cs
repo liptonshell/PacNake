@@ -14,7 +14,7 @@ namespace Pacnake
         GraphicsDeviceManager graphics;
 
         SpriteFont Font;
-        Texture2D Nake1, Tail1, Food, bg;
+        Texture2D Nake1, Tail1, Food, bg,wall;
         string direction;
 
         //elementos corpo da cobra
@@ -29,27 +29,25 @@ namespace Pacnake
         int speed = 7;//velocidade
         int pontos = 0;
 
-        int heightY;
-        int widthX;
-
         bool lost = false;
+
+        clsTabuleiro tab;
 
         public clsNake()
         {
-            heightY = 750 / 30;
-            widthX = 750 / 30;
-
             //adiçao e podiçao inicial cada parte da cobra
-            elementX.Add(0);
-            elementY.Add(0);
+            elementX.Add(2);
+            elementY.Add(2);
 
-            elementX.Add(1);
-            elementY.Add(0);
+            elementX.Add(3);
+            elementY.Add(2);
 
             //gera comida inicial
             Random d = new Random();
-            foodX.Add(d.Next(0, 750 / 30));
-            foodY.Add(d.Next(0, 750 / 30));
+            foodX.Add(d.Next(0, 630 / 30));
+            foodY.Add(d.Next(0, 630 / 30));
+
+            tab = new clsTabuleiro();
             
         }
 
@@ -66,6 +64,8 @@ namespace Pacnake
             Food = Content.Load<Texture2D>("pera");
             bg = Content.Load<Texture2D>("menu");
             Font = Content.Load<SpriteFont>("MyFont");
+            wall = Content.Load<Texture2D>("box");
+            tab.loadContent(Content);
         }
 
         public void update()
@@ -165,24 +165,26 @@ namespace Pacnake
 
                         //coloçaos comida seguinte
                         Random d = new Random();
-                        foodX.Add(d.Next(0, 750 / 30));
-                        foodY.Add(d.Next(0, 750 / 30));
+                        foodX.Add(d.Next(0, 630 / 30));
+                        foodY.Add(d.Next(0, 630 / 30));
                     }
                     i++;
                 }
 
                 //warp (aparecer no outro lado da tela)
-                if (Convert.ToInt16(elementX[0]) < 0) { elementX[0] = 750 / 30; }
-                if (Convert.ToInt16(elementX[0]) > 750 / 30) { elementX[0] = 0; }
-                if (Convert.ToInt16(elementY[0]) < 0) { elementY[0] = 750 / 30; }
-                if (Convert.ToInt16(elementY[0]) > 750 / 30) { elementY[0] = 0; }
+                if (Convert.ToInt16(elementX[0]) < 0) { elementX[0] = 630 / 30; }
+                if (Convert.ToInt16(elementX[0]) > 630 / 30) { elementX[0] = 0; }
+                if (Convert.ToInt16(elementY[0]) < 0) { elementY[0] = 630 / 30; }
+                if (Convert.ToInt16(elementY[0]) > 630 / 30) { elementY[0] = 0; }
             }
         }
 
         public void draw(SpriteBatch spriteBatch)
         {
             //desenho BackGround
-            spriteBatch.Draw(bg, new Rectangle(0, 0, 750, 750), Color.White);
+            spriteBatch.Draw(bg, new Rectangle(0, 0, 630, 630), Color.White);
+
+            tab.draw(spriteBatch);
 
             int i = 0;
             while (i < elementX.Count)
