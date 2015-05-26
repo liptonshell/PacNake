@@ -14,7 +14,9 @@ namespace Pacnake
         //GraphicsDeviceManager graphics;
 
         SpriteFont Font;
-        Texture2D Nake1, Tail1, Food, bg,wall;
+        Texture2D Nake1, Tail1, Food, bg, wall, actualNake;
+        Texture2D Nake2, Tail2, Nake3, Tail3, actualTail;
+
         string direction;
 
         //elementos corpo da cobra
@@ -33,34 +35,44 @@ namespace Pacnake
 
         clsTabuleiro tab;
 
+        Random d;
+
+        int textHead, textTail;
+
         public clsNake()
         {
             //adiçao e podiçao inicial cada parte da cobra
             elementX.Add(2);
             elementY.Add(2);
-
             elementX.Add(3);
             elementY.Add(2);
 
+            tab = new clsTabuleiro(/*numero do mapa -1*/ 1);
+
             //gera comida inicial
-            Random d = new Random();
-            foodX.Add(d.Next(0, 630 / 30));
-            foodY.Add(d.Next(0, 630 / 30));
+            d = new Random();
+            getPosition();
 
-            tab = new clsTabuleiro();
-            
+            textHead = 1;
+            textTail = 1;
         }
 
-        public void inicialize()
-        {
-            tab = new clsTabuleiro();
-        }
+
 
         public void loadContent(ContentManager Content)
         {
             //load das texturas
-            Nake1 = Content.Load<Texture2D>("Tail3");
-            Tail1 = Content.Load<Texture2D>("Tail4");
+            Nake1 = Content.Load<Texture2D>("Tail1");
+            Tail1 = Content.Load<Texture2D>("Tail2");
+
+            Nake2 = Content.Load<Texture2D>("Tail3");
+            Tail2 = Content.Load<Texture2D>("Tail4");
+
+            Nake3 = Content.Load<Texture2D>("Tail5");
+            Tail3 = Content.Load<Texture2D>("Tail6");
+
+            Change();
+
             Food = Content.Load<Texture2D>("pera");
             bg = Content.Load<Texture2D>("menu");
             Font = Content.Load<SpriteFont>("MyFont");
@@ -80,7 +92,7 @@ namespace Pacnake
                 }
                 i++;
             }
-
+            Colision();
             if (lost == false)
             {
                 KeyboardState ks = Keyboard.GetState();
@@ -101,7 +113,32 @@ namespace Pacnake
                 {
                     if (direction != "u") direction = "d";
                 }
-
+                //mudança textura ingame
+                if (ks.IsKeyDown(Keys.D1))
+                {
+                    textHead = 1;
+                }
+                if (ks.IsKeyDown(Keys.D2))
+                {
+                    textHead = 2;
+                }
+                if (ks.IsKeyDown(Keys.D3))
+                {
+                    textHead = 3;
+                }
+                if (ks.IsKeyDown(Keys.D4))
+                {
+                    textTail = 1;
+                }
+                if (ks.IsKeyDown(Keys.D5))
+                {
+                    textTail = 2;
+                }
+                if (ks.IsKeyDown(Keys.D6))
+                {
+                    textTail = 3;
+                }
+                Change();
                 //movimento
                 if (updates == speed)
                 {
@@ -164,9 +201,7 @@ namespace Pacnake
                         pontos += 10;
 
                         //coloçaos comida seguinte
-                        Random d = new Random();
-                        foodX.Add(d.Next(0, 630 / 30));
-                        foodY.Add(d.Next(0, 630 / 30));
+                        getPosition();
                     }
                     i++;
                 }
@@ -176,6 +211,43 @@ namespace Pacnake
                 if (Convert.ToInt16(elementX[0]) > 630 / 30) { elementX[0] = 0; }
                 if (Convert.ToInt16(elementY[0]) < 0) { elementY[0] = 630 / 30; }
                 if (Convert.ToInt16(elementY[0]) > 630 / 30) { elementY[0] = 0; }
+            }
+        }
+
+        //funçao para mudança de texturas
+        public void Change()
+        {
+            switch (textHead)
+            {
+                case 1:
+                    actualNake = Nake1;
+                    //actualTail = Tail1;
+                    break;
+                case 2:
+                    actualNake = Nake2;
+                    //actualTail = Tail2;
+                    break;
+                case 3:
+                    actualNake = Nake3;
+                    //actualTail = Tail3;
+                    break;
+            }
+
+            switch (textTail)
+            {
+                case 1:
+                    //actualNake = Nake1;
+                    actualTail = Tail1;
+                    break;
+                case 2:
+                    //actualNake = Nake2;
+                    actualTail = Tail2;
+                    break;
+                case 3:
+                    //actualNake = Nake3;
+                    actualTail = Tail3;
+                    break;
+
             }
         }
 
@@ -190,11 +262,11 @@ namespace Pacnake
             while (i < elementX.Count)
             {
                 //desenho Corpo
-                spriteBatch.Draw(Tail1, new Rectangle(Convert.ToInt16(elementX[i]) * 30, Convert.ToInt16(elementY[i]) * 30, 30, 30), Color.White);
+                spriteBatch.Draw(actualTail, new Rectangle(Convert.ToInt16(elementX[i]) * 30, Convert.ToInt16(elementY[i]) * 30, 30, 30), Color.White);
                 i++;
             }
             //desenho cabeça
-            spriteBatch.Draw(Nake1, new Rectangle(Convert.ToInt16(elementX[0]) * 30, Convert.ToInt16(elementY[0]) * 30, 30, 30), Color.White);
+            spriteBatch.Draw(actualNake, new Rectangle(Convert.ToInt16(elementX[0]) * 30, Convert.ToInt16(elementY[0]) * 30, 30, 30), Color.White);
 
             i = 0;
             while (i < foodX.Count)
@@ -210,6 +282,27 @@ namespace Pacnake
             }
 
             spriteBatch.DrawString(Font, "Pontos: " + pontos.ToString(), new Vector2(10, 10), Color.White);
+        }
+
+        public void getPosition()
+        {
+            int x = d.Next(0, 630 / 30);
+            int y = d.Next(0, 630 / 30);
+            if (tab.actualBoard[x, y] != 1)
+            {
+                foodX.Add(x);
+                foodY.Add(y);
+            }
+            else getPosition();
+        }
+        public bool Colision()
+        {
+            if (tab.actualBoard[Convert.ToInt16(elementX[0]), Convert.ToInt16(elementY[0])] == 1)
+            {
+                return false;
+            }
+            else
+                return true;
         }
     }
 }

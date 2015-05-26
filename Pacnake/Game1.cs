@@ -35,8 +35,6 @@ namespace Pacnake
         {
             // TODO: Add your initialization logic here
 
-            Pac.inicialize();
-
             base.Initialize();
         }
 
