@@ -13,9 +13,7 @@ namespace Pacnake
         public GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        clsTabuleiro Tab;
         clsNake Pac;
-        //clsStain stain;
 
 
         public Game1()
@@ -30,9 +28,7 @@ namespace Pacnake
 
             IsMouseVisible = true;
 
-            Tab = new clsTabuleiro();
             Pac=new clsNake();
-            //stain = new clsStain();
         }
 
         protected override void Initialize()
@@ -49,7 +45,6 @@ namespace Pacnake
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            Tab.loadContent(Content);
             Pac.loadContent(Content);
         }
 
@@ -76,7 +71,6 @@ namespace Pacnake
 
             spriteBatch.Begin();
 
-            Tab.draw(spriteBatch);
             Pac.draw(spriteBatch);
 
             spriteBatch.End();

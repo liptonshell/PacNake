@@ -10,13 +10,6 @@ namespace Pacnake
 {
     public class clsTabuleiro
     {
-        //public enum tabuleiro
-        //{
-        //    currentBoard,
-        //    boar1, boar2, boar3, boar4, boar5, boar6, boar7, boar8
-        //}
-        //Tabuleiros sem parede
-
         byte[,] Board1 = {
                          { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
                          { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -215,18 +208,18 @@ namespace Pacnake
             {
                 for (int y = 0; y < 21; y++)
                 {
-                    if (Board6[y, x] == 1)
+                    if (Board7[y, x] == 1)
                     {
-                        spriteBatch.Draw(wall, new Vector2(x * 30, y * 30), Color.Orange);
+                        spriteBatch.Draw(wall, new Rectangle(x*30, y*30,30,30), Color.Orange);
                     }
                 }
             }
         }
 
-        //public bool CanGo(int pX, int pY)
-        //{
-        //    if (Board2[pX, pY] != 1) return true;
-        //    else return false;
-        //}
+        public bool CanGo(int pX, int pY)
+        {
+            if (Board6[pX, pY] != 1) return true;
+            else return false;
+        }
     }
 }

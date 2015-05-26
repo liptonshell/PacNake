@@ -11,7 +11,7 @@ namespace Pacnake
 {
     public class clsNake
     {
-        GraphicsDeviceManager graphics;
+        //GraphicsDeviceManager graphics;
 
         SpriteFont Font;
         Texture2D Nake1, Tail1, Food, bg,wall;
@@ -53,14 +53,14 @@ namespace Pacnake
 
         public void inicialize()
         {
-            //go = new clsTabuleiro();
+            tab = new clsTabuleiro();
         }
 
         public void loadContent(ContentManager Content)
         {
             //load das texturas
-            Nake1 = Content.Load<Texture2D>("Man1");
-            Tail1 = Content.Load<Texture2D>("Tail2");
+            Nake1 = Content.Load<Texture2D>("Tail3");
+            Tail1 = Content.Load<Texture2D>("Tail4");
             Food = Content.Load<Texture2D>("pera");
             bg = Content.Load<Texture2D>("menu");
             Font = Content.Load<SpriteFont>("MyFont");
