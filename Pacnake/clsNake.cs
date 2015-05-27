@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
 using System.Collections;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Pacnake
 {
@@ -37,6 +38,8 @@ namespace Pacnake
 
         Random d;
 
+        SoundEffect eat,colid;
+
         int textHead, textTail;
 
         public clsNake()
@@ -47,7 +50,7 @@ namespace Pacnake
             elementX.Add(3);
             elementY.Add(2);
 
-            tab = new clsTabuleiro(/*numero do mapa -1*/ 1);
+            tab = new clsTabuleiro(/*numero do mapa -1*/ 0);
 
             //gera comida inicial
             d = new Random();
@@ -78,6 +81,8 @@ namespace Pacnake
             Font = Content.Load<SpriteFont>("MyFont");
             wall = Content.Load<Texture2D>("box");
             tab.loadContent(Content);
+            eat = Content.Load<SoundEffect>("Soda");
+            colid = Content.Load<SoundEffect>("MetalClang");
         }
 
         public void update()
@@ -92,6 +97,7 @@ namespace Pacnake
                     //caso morda uma das partes do corpo
                     if (elementX[i].ToString() == elementX[0].ToString() && elementY[i].ToString() == elementY[0].ToString())
                     {
+                        colid.Play();
                         lost = true;
                     }
                     i++;
@@ -206,6 +212,8 @@ namespace Pacnake
                         //adiçao pontos
                         pontos += 10;
 
+                        eat.Play();
+
                         //coloçaos comida seguinte
                         getPosition();
                     }
@@ -318,6 +326,7 @@ namespace Pacnake
                 {
                     if (tab.actualBoard[x, y] == 1)
                     {
+                        colid.Play();
                         return true;
                     }
                     else
