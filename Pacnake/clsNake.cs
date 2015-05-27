@@ -28,7 +28,7 @@ namespace Pacnake
         ArrayList foodX = new ArrayList();
 
         int updates = 0;
-        int speed = 7;//velocidade
+        int speed = 10;//velocidade
         int pontos = 0;
 
         bool lost = false;
@@ -82,19 +82,21 @@ namespace Pacnake
 
         public void update()
         {
-            int i = 1;
-            while (i < elementX.Count)
-            {
-                //caso morda uma das partes do corpo
-                if (elementX[i].ToString() == elementX[0].ToString() && elementY[i].ToString() == elementY[0].ToString())
-                {
-                    lost = true;
-                }
-                i++;
-            }
-            Colision();
+
             if (lost == false)
             {
+
+                int i = 1;
+                while (i < elementX.Count)
+                {
+                    //caso morda uma das partes do corpo
+                    if (elementX[i].ToString() == elementX[0].ToString() && elementY[i].ToString() == elementY[0].ToString())
+                    {
+                        lost = true;
+                    }
+                    i++;
+                }
+
                 KeyboardState ks = Keyboard.GetState();
                 //direcçoes
                 if (ks.IsKeyDown(Keys.Left))
@@ -175,7 +177,11 @@ namespace Pacnake
                         elementY.Insert(0, elementY[0]);
                         elementY.RemoveAt(elementY.Count - 1);
                     }
-
+                    //Colision();
+                    if (Colision())
+                    {
+                        lost = true;
+                    }
                     updates = 0;
                 }
                 else
@@ -207,10 +213,14 @@ namespace Pacnake
                 }
 
                 //warp (aparecer no outro lado da tela)
-                if (Convert.ToInt16(elementX[0]) < 0) { elementX[0] = 630 / 30; }
-                if (Convert.ToInt16(elementX[0]) > 630 / 30) { elementX[0] = 0; }
-                if (Convert.ToInt16(elementY[0]) < 0) { elementY[0] = 630 / 30; }
-                if (Convert.ToInt16(elementY[0]) > 630 / 30) { elementY[0] = 0; }
+                if (Convert.ToInt16(elementX[0]) < 0) { elementX[0] = 600 / 30; }
+                if (Convert.ToInt16(elementX[0]) > 600 / 30) { elementX[0] = 0; }
+                if (Convert.ToInt16(elementY[0]) < 0) { elementY[0] = 600 / 30; }
+                if (Convert.ToInt16(elementY[0]) > 600 / 30) { elementY[0] = 0; }
+            }
+            else
+            {
+
             }
         }
 
@@ -262,7 +272,7 @@ namespace Pacnake
             while (i < elementX.Count)
             {
                 //desenho Corpo
-                spriteBatch.Draw(actualTail, new Rectangle(Convert.ToInt16(elementX[i]) * 30, Convert.ToInt16(elementY[i]) * 30, 30, 30), Color.White);
+                spriteBatch.Draw(actualTail, new Rectangle((Convert.ToInt16(elementX[i])) * 30, Convert.ToInt16(elementY[i]) * 30, 30, 30), Color.White);
                 i++;
             }
             //desenho cabeça
@@ -278,7 +288,7 @@ namespace Pacnake
 
             if (lost)
             {
-                spriteBatch.DrawString(Font, "PERDEU.", new Vector2(50, 750 / 2), Color.White);
+                spriteBatch.DrawString(Font, "PERDEU.\nConseguiu: " + pontos.ToString() + " pontos", new Vector2(50, 630 / 2), Color.White);
             }
 
             spriteBatch.DrawString(Font, "Pontos: " + pontos.ToString(), new Vector2(10, 10), Color.White);
@@ -297,12 +307,33 @@ namespace Pacnake
         }
         public bool Colision()
         {
-            if (tab.actualBoard[Convert.ToInt16(elementX[0]), Convert.ToInt16(elementY[0])] == 1)
+            int x = Convert.ToInt16(elementX[0]);
+            int y = Convert.ToInt16(elementY[0]);
+
+            Console.WriteLine("x=" + x + "y=" + y);
+
+            if (x >= 0 && y >= 0)
+            {
+                if (x <= 600 / 30 && y <= 600 / 30)
+                {
+                    if (tab.actualBoard[x, y] == 1)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
             {
                 return false;
             }
-            else
-                return true;
         }
     }
 }

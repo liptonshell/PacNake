@@ -38,6 +38,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="clsButton.cs" />
     <Compile Include="clsNake.cs" />
     <Compile Include="clsTabuleiro.cs" />
     <Compile Include="Game1.cs" />
