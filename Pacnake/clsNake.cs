@@ -12,10 +12,11 @@ namespace Pacnake
 {
     public class clsNake
     {
-        //GraphicsDeviceManager graphics;
+        //menu
+        string estado="Menu";
 
         SpriteFont Font;
-        Texture2D Nake1, Tail1, Food, bg, wall, actualNake;
+        Texture2D Nake1, Tail1, Food, bg, menu, wall, actualNake;
         Texture2D Nake2, Tail2, Nake3, Tail3, actualTail;
 
         string direction;
@@ -60,8 +61,6 @@ namespace Pacnake
             textTail = 1;
         }
 
-
-
         public void loadContent(ContentManager Content)
         {
             //load das texturas
@@ -77,7 +76,8 @@ namespace Pacnake
             Change();
 
             Food = Content.Load<Texture2D>("pera");
-            bg = Content.Load<Texture2D>("menu");
+            menu = Content.Load<Texture2D>("menu");
+            bg = Content.Load<Texture2D>("bg");
             Font = Content.Load<SpriteFont>("MyFont");
             wall = Content.Load<Texture2D>("box");
             tab.loadContent(Content);
@@ -87,148 +87,205 @@ namespace Pacnake
 
         public void update()
         {
-
-            if (lost == false)
+            if (estado == "jogar")
             {
-
-                int i = 1;
-                while (i < elementX.Count)
+                if (lost == false)
                 {
-                    //caso morda uma das partes do corpo
-                    if (elementX[i].ToString() == elementX[0].ToString() && elementY[i].ToString() == elementY[0].ToString())
+                    int i = 1;
+                    while (i < elementX.Count)
                     {
-                        colid.Play();
-                        lost = true;
-                    }
-                    i++;
-                }
-
-                KeyboardState ks = Keyboard.GetState();
-                //direcçoes
-                if (ks.IsKeyDown(Keys.Left))
-                {
-                    if (direction != "r") direction = "l";
-                }
-                if (ks.IsKeyDown(Keys.Right))
-                {
-                    if (direction != "l") direction = "r";
-                }
-                if (ks.IsKeyDown(Keys.Up))
-                {
-                    if (direction != "d") direction = "u";
-                }
-                if (ks.IsKeyDown(Keys.Down))
-                {
-                    if (direction != "u") direction = "d";
-                }
-                //mudança textura ingame
-                if (ks.IsKeyDown(Keys.D1))
-                {
-                    textHead = 1;
-                }
-                if (ks.IsKeyDown(Keys.D2))
-                {
-                    textHead = 2;
-                }
-                if (ks.IsKeyDown(Keys.D3))
-                {
-                    textHead = 3;
-                }
-                if (ks.IsKeyDown(Keys.D4))
-                {
-                    textTail = 1;
-                }
-                if (ks.IsKeyDown(Keys.D5))
-                {
-                    textTail = 2;
-                }
-                if (ks.IsKeyDown(Keys.D6))
-                {
-                    textTail = 3;
-                }
-                Change();
-                //movimento
-                if (updates == speed)
-                {
-                    if (direction == "d")
-                    {
-                        elementX.Insert(0, elementX[0]);
-                        elementX.RemoveAt(elementX.Count - 1);
-
-                        elementY.Insert(0, Convert.ToInt16(elementY[0]) + 1);
-                        elementY.RemoveAt(elementY.Count - 1);
-                    }
-                    if (direction == "u")
-                    {
-                        elementX.Insert(0, elementX[0]);
-                        elementX.RemoveAt(elementX.Count - 1);
-
-                        elementY.Insert(0, Convert.ToInt16(elementY[0]) - 1);
-                        elementY.RemoveAt(elementY.Count - 1);
-                    }
-                    if (direction == "l")
-                    {
-                        elementX.Insert(0, Convert.ToInt16(elementX[0]) - 1);
-                        elementX.RemoveAt(elementX.Count - 1);
-
-                        elementY.Insert(0, elementY[0]);
-                        elementY.RemoveAt(elementY.Count - 1);
+                        //caso morda uma das partes do corpo
+                        if (elementX[i].ToString() == elementX[0].ToString() && elementY[i].ToString() == elementY[0].ToString())
+                        {
+                            colid.Play();
+                            lost = true;
+                            updates = 0;
+                        }
+                        i++;
                     }
 
-                    if (direction == "r")
+                    KeyboardState ks = Keyboard.GetState();
+                    //direcçoes
+                    if (ks.IsKeyDown(Keys.Left))
                     {
-                        elementX.Insert(0, Convert.ToInt16(elementX[0]) + 1);
-                        elementX.RemoveAt(elementX.Count - 1);
+                        if (direction != "r") direction = "l";
+                    }
+                    if (ks.IsKeyDown(Keys.Right))
+                    {
+                        if (direction != "l") direction = "r";
+                    }
+                    if (ks.IsKeyDown(Keys.Up))
+                    {
+                        if (direction != "d") direction = "u";
+                    }
+                    if (ks.IsKeyDown(Keys.Down))
+                    {
+                        if (direction != "u") direction = "d";
+                    }
+                    //mudança textura ingame
+                    if (ks.IsKeyDown(Keys.D1))
+                    {
+                        textHead = 1;
+                    }
+                    if (ks.IsKeyDown(Keys.D2))
+                    {
+                        textHead = 2;
+                    }
+                    if (ks.IsKeyDown(Keys.D3))
+                    {
+                        textHead = 3;
+                    }
+                    if (ks.IsKeyDown(Keys.D4))
+                    {
+                        textTail = 1;
+                    }
+                    if (ks.IsKeyDown(Keys.D5))
+                    {
+                        textTail = 2;
+                    }
+                    if (ks.IsKeyDown(Keys.D6))
+                    {
+                        textTail = 3;
+                    }
+                    Change();
+                    //movimento
+                    if (updates == speed)
+                    {
+                        if (direction == "d")
+                        {
+                            elementX.Insert(0, elementX[0]);
+                            elementX.RemoveAt(elementX.Count - 1);
 
-                        elementY.Insert(0, elementY[0]);
-                        elementY.RemoveAt(elementY.Count - 1);
+                            elementY.Insert(0, Convert.ToInt16(elementY[0]) + 1);
+                            elementY.RemoveAt(elementY.Count - 1);
+                        }
+                        if (direction == "u")
+                        {
+                            elementX.Insert(0, elementX[0]);
+                            elementX.RemoveAt(elementX.Count - 1);
+
+                            elementY.Insert(0, Convert.ToInt16(elementY[0]) - 1);
+                            elementY.RemoveAt(elementY.Count - 1);
+                        }
+                        if (direction == "l")
+                        {
+                            elementX.Insert(0, Convert.ToInt16(elementX[0]) - 1);
+                            elementX.RemoveAt(elementX.Count - 1);
+
+                            elementY.Insert(0, elementY[0]);
+                            elementY.RemoveAt(elementY.Count - 1);
+                        }
+
+                        if (direction == "r")
+                        {
+                            elementX.Insert(0, Convert.ToInt16(elementX[0]) + 1);
+                            elementX.RemoveAt(elementX.Count - 1);
+
+                            elementY.Insert(0, elementY[0]);
+                            elementY.RemoveAt(elementY.Count - 1);
+                        }
+                        //Colision();
+                        if (Colision())
+                        {
+                            updates = 0;
+                            lost = true;
+                        }
+                        updates = 0;
                     }
-                    //Colision();
-                    if (Colision())
+                    else
                     {
-                        lost = true;
+                        updates++;
                     }
-                    updates = 0;
+
+
+                    i = 0;
+                    while (i < foodX.Count)
+                    {
+                        if (foodX[i].ToString() == elementX[0].ToString() && foodY[i].ToString() == elementY[0].ToString())
+                        {
+                            //remoçao comida
+                            foodX.RemoveAt(i);
+                            foodY.RemoveAt(i);
+
+                            //Adiçao parte na cobra
+                            elementX.Add(-1);
+                            elementY.Add(-1);
+
+                            //adiçao pontos
+                            pontos += 10;
+
+                            eat.Play();
+
+                            //coloçaos comida seguinte
+                            getPosition();
+                        }
+                        i++;
+                    }
+
+                    //warp (aparecer no outro lado da tela)
+                    if (Convert.ToInt16(elementX[0]) < 0) { elementX[0] = 600 / 30; }
+                    if (Convert.ToInt16(elementX[0]) > 600 / 30) { elementX[0] = 0; }
+                    if (Convert.ToInt16(elementY[0]) < 0) { elementY[0] = 600 / 30; }
+                    if (Convert.ToInt16(elementY[0]) > 600 / 30) { elementY[0] = 0; }
                 }
                 else
                 {
-                    updates++;
-                }
-
-
-                i = 0;
-                while (i < foodX.Count)
-                {
-                    if (foodX[i].ToString() == elementX[0].ToString() && foodY[i].ToString() == elementY[0].ToString())
+                    KeyboardState ks = Keyboard.GetState();
+                    if (ks.IsKeyDown(Keys.Enter))
                     {
-                        //remoçao comida
-                        foodX.RemoveAt(i);
-                        foodY.RemoveAt(i);
+                        estado = "Menu";
 
-                        //Adiçao parte na cobra
-                        elementX.Add(-1);
-                        elementY.Add(-1);
+                        elementX.Clear();
+                        elementY.Clear();
 
-                        //adiçao pontos
-                        pontos += 10;
+                        elementX.Add(3);
+                        elementY.Add(3);
 
-                        eat.Play();
+                        elementX.Add(4);
+                        elementY.Add(3);
 
-                        //coloçaos comida seguinte
-                        getPosition();
+                        lost = false;
+                        
+                        pontos = 0;
+
+                        updates = 0;
                     }
-                    i++;
-                }
-
-                //warp (aparecer no outro lado da tela)
-                if (Convert.ToInt16(elementX[0]) < 0) { elementX[0] = 600 / 30; }
-                if (Convert.ToInt16(elementX[0]) > 600 / 30) { elementX[0] = 0; }
-                if (Convert.ToInt16(elementY[0]) < 0) { elementY[0] = 600 / 30; }
-                if (Convert.ToInt16(elementY[0]) > 600 / 30) { elementY[0] = 0; }
+                } 
             }
-            else
+            else if (estado == "Menu")
             {
+                KeyboardState ks = Keyboard.GetState();
 
+                if(ks.IsKeyDown(Keys.Q))
+                {
+                    tab.actualBoard = tab.Board1;
+                    estado = "jogar";
+                }
+                if (ks.IsKeyDown(Keys.W))
+                {
+                    tab.actualBoard = tab.Board2;
+                    estado = "jogar";
+                }
+                if (ks.IsKeyDown(Keys.E))
+                {
+                    tab.actualBoard = tab.Board3;
+                    estado = "jogar";
+                }
+                if (ks.IsKeyDown(Keys.R))
+                {
+                    tab.actualBoard = tab.Board4;
+                    estado = "jogar";
+                }
+                if (ks.IsKeyDown(Keys.T))
+                {
+                    tab.actualBoard = tab.Board5;
+                    estado = "jogar";
+                }
+                if (ks.IsKeyDown(Keys.Y))
+                {
+                    tab.actualBoard = tab.Board6;
+                    estado = "jogar";
+                }
             }
         }
 
@@ -239,30 +296,24 @@ namespace Pacnake
             {
                 case 1:
                     actualNake = Nake1;
-                    //actualTail = Tail1;
                     break;
                 case 2:
                     actualNake = Nake2;
-                    //actualTail = Tail2;
                     break;
                 case 3:
                     actualNake = Nake3;
-                    //actualTail = Tail3;
                     break;
             }
 
             switch (textTail)
             {
                 case 1:
-                    //actualNake = Nake1;
                     actualTail = Tail1;
                     break;
                 case 2:
-                    //actualNake = Nake2;
                     actualTail = Tail2;
                     break;
                 case 3:
-                    //actualNake = Nake3;
                     actualTail = Tail3;
                     break;
 
@@ -271,42 +322,49 @@ namespace Pacnake
 
         public void draw(SpriteBatch spriteBatch)
         {
-            //desenho BackGround
-            spriteBatch.Draw(bg, new Rectangle(0, 0, 630, 630), Color.White);
-
-            tab.draw(spriteBatch);
-
-            int i = 0;
-            while (i < elementX.Count)
+            if (estado == "Menu")
             {
-                //desenho Corpo
-                spriteBatch.Draw(actualTail, new Rectangle((Convert.ToInt16(elementX[i])) * 30, Convert.ToInt16(elementY[i]) * 30, 30, 30), Color.White);
-                i++;
+                spriteBatch.Draw(menu, new Rectangle(0, 0, 630, 630), Color.White);
             }
-            //desenho cabeça
-            spriteBatch.Draw(actualNake, new Rectangle(Convert.ToInt16(elementX[0]) * 30, Convert.ToInt16(elementY[0]) * 30, 30, 30), Color.White);
-
-            i = 0;
-            while (i < foodX.Count)
+            else if (estado == "jogar")
             {
-                //desenho comida
-                spriteBatch.Draw(Food, new Rectangle(Convert.ToInt16(foodX[i]) * 30, Convert.ToInt16(foodY[i]) * 30, 30, 30), Color.White);
-                i++;
-            }
+                //desenho BackGround
+                spriteBatch.Draw(bg, new Rectangle(0, 0, 630, 630), Color.White);
 
-            if (lost)
-            {
-                spriteBatch.DrawString(Font, "PERDEU.\nConseguiu: " + pontos.ToString() + " pontos", new Vector2(50, 630 / 2), Color.White);
-            }
+                tab.draw(spriteBatch);
 
-            spriteBatch.DrawString(Font, "Pontos: " + pontos.ToString(), new Vector2(10, 10), Color.White);
+                int i = 0;
+                while (i < elementX.Count)
+                {
+                    //desenho Corpo
+                    spriteBatch.Draw(actualTail, new Rectangle((Convert.ToInt16(elementX[i])) * 30, Convert.ToInt16(elementY[i]) * 30, 30, 30), Color.White);
+                    i++;
+                }
+                //desenho cabeça
+                spriteBatch.Draw(actualNake, new Rectangle(Convert.ToInt16(elementX[0]) * 30, Convert.ToInt16(elementY[0]) * 30, 30, 30), Color.White);
+
+                i = 0;
+                while (i < foodX.Count)
+                {
+                    //desenho comida
+                    spriteBatch.Draw(Food, new Rectangle(Convert.ToInt16(foodX[i]) * 30, Convert.ToInt16(foodY[i]) * 30, 30, 30), Color.White);
+                    i++;
+                }
+
+                if (lost)
+                {
+                    spriteBatch.DrawString(Font, "PERDEU.\nConseguiu: " + pontos.ToString() + " pontos\nClique 'Enter' para voltar ao Menu", new Vector2(50, 630 / 2), Color.White);
+                }
+
+                spriteBatch.DrawString(Font, "Pontos: " + pontos.ToString(), new Vector2(10, 10), Color.White);
+            }
         }
 
         public void getPosition()
         {
             int x = d.Next(0, 630 / 30);
             int y = d.Next(0, 630 / 30);
-            if (tab.actualBoard[x, y] != 1)
+            if (tab.actualBoard[x, y] == 0)
             {
                 foodX.Add(x);
                 foodY.Add(y);

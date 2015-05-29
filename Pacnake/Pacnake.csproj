@@ -38,7 +38,6 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="clsButton.cs" />
     <Compile Include="clsNake.cs" />
     <Compile Include="clsTabuleiro.cs" />
     <Compile Include="Game1.cs" />
@@ -53,11 +52,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bg.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\box.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\menu.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <Content Include="Content\Menu.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\pera.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
