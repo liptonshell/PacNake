@@ -5,9 +5,6 @@ using System;
 
 namespace Pacnake
 {
-    /// <summary>
-    /// This is the main type for your game
-    /// </summary>
     public class Game1 : Game
     {
         public GraphicsDeviceManager graphics;
@@ -28,6 +25,7 @@ namespace Pacnake
 
             IsMouseVisible = true;
 
+            //chamamento da classe clsNake
             Pac=new clsNake();
         }
 
@@ -42,9 +40,9 @@ namespace Pacnake
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            // load das texturas da class
             Pac.loadContent(Content);
         }
-
 
         protected override void UnloadContent()
         {
@@ -56,6 +54,7 @@ namespace Pacnake
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            //update da class
             Pac.update();
 
             base.Update(gameTime);
@@ -65,9 +64,9 @@ namespace Pacnake
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-
             spriteBatch.Begin();
 
+            //draw da class
             Pac.draw(spriteBatch);
 
             spriteBatch.End();

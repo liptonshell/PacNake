@@ -12,6 +12,7 @@ namespace Pacnake
     {
         public byte[,] actualBoard;
 
+        //bytes de cada tabuleiro
         public byte[,] Board1 = {
                          { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
                          { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -156,6 +157,7 @@ namespace Pacnake
 
         public clsTabuleiro(int board)
         {
+            //associaçao de cada tabuleiro a uma variavel
             switch (board)
             {
                 case 0:
@@ -181,9 +183,11 @@ namespace Pacnake
 
         public void loadContent(ContentManager Content)
         {
+            //load da textura do bloco da parede
             wall = Content.Load<Texture2D>("box");
         }
 
+        //Desenho dos tabuleiros
         public void draw(SpriteBatch spriteBatch)
         {
             for (int x = 0; x < 21; x++)
