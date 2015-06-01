@@ -13,7 +13,7 @@ namespace Pacnake
     public class clsNake
     {
         //menu
-        string estado="Menu";
+        string estado = "Menu";
 
         SpriteFont Font;
         Texture2D Nake1, Tail1, Food, bg, menu, wall, actualNake;
@@ -21,7 +21,7 @@ namespace Pacnake
 
         string direction;
 
-        //elementos corpo da cobra
+        //elementos corpo do Pac
         ArrayList elementY = new ArrayList();
         ArrayList elementX = new ArrayList();
 
@@ -40,7 +40,7 @@ namespace Pacnake
         Random d;
 
         //efeitos sonoros coliçao e comer
-        SoundEffect eat,colid;
+        SoundEffect eat, colid;
 
         int textHead, textTail;
 
@@ -91,7 +91,7 @@ namespace Pacnake
         {
             // se estiver a jogar
             if (estado == "jogar")
-            { 
+            {
                 // e se nao tiver perdido
                 if (lost == false)
                 {
@@ -220,7 +220,7 @@ namespace Pacnake
                             foodX.RemoveAt(i);
                             foodY.RemoveAt(i);
 
-                            //Adiçao parte na cobra
+                            //Adiçao parte no Pac
                             elementX.Add(-1);
                             elementY.Add(-1);
 
@@ -250,9 +250,13 @@ namespace Pacnake
                     {
                         estado = "Menu";
 
-                        //apaga a cobra da posiçao em que se encontrava no jogo anterior
+                        //apaga a Pac da posiçao em que se encontrava no jogo anterior
                         elementX.Clear();
                         elementY.Clear();
+
+                        //apaga a comida da posiçao em que se encontrava no jogo anterior
+                        foodX.Clear();
+                        foodY.Clear();
 
                         updates = 0;
 
@@ -262,20 +266,22 @@ namespace Pacnake
                         elementX.Add(4);
                         elementY.Add(3);
 
+                        getPosition();
+
                         //condiçao se perdeu volta para o inicio 'false'
                         lost = false;
-                        
+
                         //pontos voltam aos iniciais 
                         pontos = 0;
                     }
-                } 
+                }
             }
             else if (estado == "Menu")
             {
                 KeyboardState ks = Keyboard.GetState();
-                
+
                 //no Menu caso prima uma das teclas ira escolher o tabuleiro designado e começando assim o jogo
-                if(ks.IsKeyDown(Keys.Q))
+                if (ks.IsKeyDown(Keys.Q))
                 {
                     tab.actualBoard = tab.Board1;
                     estado = "jogar";
@@ -349,7 +355,7 @@ namespace Pacnake
             {
                 //desenho BackGround
                 spriteBatch.Draw(bg, new Rectangle(0, 0, 630, 630), Color.White);
-                
+
                 //desenho tabuleiro
                 tab.draw(spriteBatch);
 
@@ -370,12 +376,12 @@ namespace Pacnake
                     spriteBatch.Draw(Food, new Rectangle(Convert.ToInt16(foodX[i]) * 30, Convert.ToInt16(foodY[i]) * 30, 30, 30), Color.White);
                     i++;
                 }
-                
+
                 //caso perca 
                 if (lost)
                 {
                     //ira aparecer uma mensagem com os pontos que conseguiu obter durante aquele jogo e a tecla que teve carregar para voltar ao menu
-                    spriteBatch.DrawString(Font, "PERDEU.\nConseguiu: " + pontos.ToString() + " pontos\nClique 'Enter' para voltar ao Menu", 
+                    spriteBatch.DrawString(Font, "PERDEU.\nConseguiu: " + pontos.ToString() + " pontos\nClique 'Enter' para voltar ao Menu",
                         new Vector2(50, 630 / 2), Color.White);
                 }
 
@@ -389,11 +395,11 @@ namespace Pacnake
         {
             int x = d.Next(0, 630 / 30);
             int y = d.Next(0, 630 / 30);
-            
+
             if (tab.actualBoard[x, y] == 0)
             {
-                    foodX.Add(x);
-                    foodY.Add(y);
+                foodX.Add(x);
+                foodY.Add(y);
             }
             else getPosition();
         }
